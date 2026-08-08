@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Prapti 🦋</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #fff0f5;
+            color: #4a2e35;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #site-container {
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page {
+            background-color: #ffffff;
+            border: 3px solid #ffb6c1;
+            border-radius: 28px;
+            box-shadow: 0 14px 35px rgba(255, 182, 193, 0.25);
+            padding: 35px 25px;
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+            position: relative;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2 {
+            color: #d81b60;
+            margin-bottom: 15px;
+            font-size: 1.6rem;
+        }
+
+        p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: #5d3a42;
+        }
+
+        .btn {
+            background-color: #ff69b4;
+            color: #ffffff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.4);
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .btn:hover {
+            background-color: #ff1493;
+            transform: translateY(-2px);
+        }
+
+        /* --- GARDEN FIELD --- */
+        #garden-field {
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(to bottom, #fff5f8 0%, #f0fff0 100%);
+            border: 2px solid #ffc0cb;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .flower {
+            position: absolute;
+            font-size: 2.2rem;
+            user-select: none;
+            transition: transform 0.2s ease;
+        }
+
+        #butterfly {
+            position: absolute;
+            font-size: 2.5rem;
+            user-select: none;
+            transition: all 0.12s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        .meme-cat-img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 3px solid #ffb6c1;
+            box-shadow: 0 8px 20px rgba(216, 27, 96, 0.2);
+            margin-bottom: 20px;
+            animation: bounceMeme 0.6s infinite alternate ease-in-out;
+        }
+
+        @keyframes bounceMeme {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-8px) scale(1.03); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="site-container">
+
+        <!-- PAGE 1: IMPOSSIBLE BUTTERFLY GAME -->
+        <div class="page active" id="page1">
+            <h1>Prapti catch the butterfly if you can 🦋</h1>
+            <p>Tap or click the butterfly to catch it!</p>
+
+            <div id="garden-field">
+                <div id="butterfly">🦋</div>
+            </div>
+
+            <button class="btn" id="next-btn" style="display: none;" onclick="showPage('page2')">Give Up? Next ➜</button>
+        </div>
+
+        <!-- PAGE 2: MEME CAT & PRANK MESSAGE -->
+        <div class="page" id="page2">
+            <!-- Actual Meme Cat Picture -->
+            <img class="meme-cat-img" src="https://i.kym-cdn.com/entries/icons/original/000/026/489/crying.jpg" alt="Laughing Meme Cat">
+
+            <h2>You Got Fooled! 😹</h2>
+            <p>I made this game in such a way that the butterfly could never be caught! Haha, hope that made you smile :) ✨</p>
+        </div>
+
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // --- IMPOSSIBLE BUTTERFLY GAME LOGIC ---
+        const garden = document.getElementById('garden-field');
+        const butterfly = document.getElementById('butterfly');
+        const nextBtn = document.getElementById('next-btn');
+
+        const flowerEmojis = ['🌸', '🌺', '🌷', '🌹', '🌻', '🌼', '🪷', '🌾'];
+        const flowerPositions = [
+            { x: 15, y: 15 }, { x: 70, y: 20 },
+            { x: 40, y: 40 }, { x: 80, y: 55 },
+            { x: 20, y: 65 }, { x: 60, y: 75 },
+            { x: 10, y: 80 }, { x: 85, y: 85 }
+        ];
+
+        // Spawn Flowers
+        flowerPositions.forEach((pos, idx) => {
+            const flower = document.createElement('div');
+            flower.className = 'flower';
+            flower.innerText = flowerEmojis[idx % flowerEmojis.length];
+            flower.style.left = pos.x + '%';
+            flower.style.top = pos.y + '%';
+            garden.appendChild(flower);
+        });
+
+        let currentFlowerIndex = 0;
+        let attempts = 0;
+
+        function moveButterfly() {
+            let nextIndex;
+            do {
+                nextIndex = Math.floor(Math.random() * flowerPositions.length);
+            } while (nextIndex === currentFlowerIndex);
+
+            currentFlowerIndex = nextIndex;
+            const targetPos = flowerPositions[currentFlowerIndex];
+
+            butterfly.style.left = targetPos.x + '%';
+            butterfly.style.top = targetPos.y + '%';
+
+            attempts++;
+            if (attempts >= 4) {
+                nextBtn.style.display = 'inline-block';
+            }
+        }
+
+        // Set Initial Position
+        moveButterfly();
+
+        // Instant Dodge triggers
+        butterfly.addEventListener('mouseover', moveButterfly);
+        butterfly.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveButterfly();
+        });
+        garden.addEventListener('click', (e) => {
+            const rect = butterfly.getBoundingClientRect();
+            const dist = Math.hypot(e.clientX - (rect.left + 20), e.clientY - (rect.top + 20));
+            if (dist < 120) {
+                moveButterfly();
+            }
+        });
+    </script>
+</body>
+</html>
